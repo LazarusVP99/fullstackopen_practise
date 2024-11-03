@@ -1,4 +1,4 @@
-``` mermaid
+```mermaid
 sequenceDiagram
     participant user
     participant browser
