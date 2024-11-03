@@ -1,0 +1,49 @@
+<div style="background-color: white; padding: 20px;">
+ <h3 style="text-align: center;">Flowchart diagram</h3>
+
+``` mermaid
+
+---
+  config:
+    theme: neutral
+    layout: elk
+    logLevel: info
+    securityLevel: strict
+    startOnLoad: true
+    arrowMarkerAbsolute: false
+---
+%%{
+  init: {
+    'theme': 'base',
+    'themeVariables': {
+      'primaryColor': '#006',
+      'primaryTextColor': '#fff',
+      'primaryBorderColor': '#444444',
+      'lineColor': '#444444',      'secondaryColor': '#006',
+      'tertiaryColor': '#fff',
+      'fontSize': '20px'
+    }
+  }
+}%%
+graph LR
+   U(("&nbsp; fa:fa-user User &nbsp;"))
+   B("&nbsp; fab:fa-chrome <b>Browser</b> &nbsp;")
+   S("&nbsp; fa:fa-server <i>Server</i> &nbsp;")
+   %% User initiates action by submitting a note through the form
+    U ==>|Submit Form| B
+   %% Browser sends the form data to server using HTTP POST request to /new_note endpoint
+    B ---|1.HTTP POST /new_note| S
+   %% Server processes the request and responds with a 302 status code to redirect to /notes page
+    S -..-|2.HTTP 302 Redirect to /notes| B
+   %% Browser follows the redirect by requesting the /notes page and receives the HTML content
+    B ---|3.HTTP GET /notes| S
+    S -..-|4.Return HTML| B
+    B ---|5.HTTP GET main.css| S
+    S -..-|6.Return CSS| B
+    B ---|7.HTTP GET main.js| S
+    S -..-|8.Return JavaScript| B
+    B ---|9.HTTP GET data.json| S
+    S -..-|&nbsp; 10.Return notes data &nbsp;| B
+
+    linkStyle default interpolate basis
+```
