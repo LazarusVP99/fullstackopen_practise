@@ -1,0 +1,31 @@
+.success {
+    color: green;
+    width: 50%;
+    background-color: #e8f5e9;
+    border: 2px solid green;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.error {
+    color: red;
+    width: 50%;
+    background-color: #ffcdd2;
+    border: 2px solid red;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+    display: none;
+}
