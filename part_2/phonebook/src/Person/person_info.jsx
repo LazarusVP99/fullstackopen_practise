@@ -1,14 +1,11 @@
 const Persons = ({ persons, deletePerson }) =>
   persons?.map(({ id, name, number }) => (
-    <div key={id} style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-      <p style={{ margin: "10px" }}>
-        {name} {number}
+    <div key={id} className="persons_container">
+      <p>
+        <span>{name}</span>
+        <span>{number}</span>
       </p>
-      <button
-        onClick={() => deletePerson(id, name)}
-        style={{ height: "20px", background: "#f44336" }}
-        type="button"
-      >
+      <button type="button" onClick={() => deletePerson(id, name)}>
         delete
       </button>
     </div>

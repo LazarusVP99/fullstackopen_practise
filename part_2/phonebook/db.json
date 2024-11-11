@@ -1,14 +1,9 @@
 {
   "persons": [
     {
-      "id": "9c2e",
-      "name": "Mary Poppendieck ",
-      "number": "39-23-6423134"
-    },
-    {
       "id": "4333",
       "name": "Arto Hellas",
-      "number": "9878-89-50"
+      "number": "040-123456"
     },
     {
       "id": "6b17",
@@ -19,6 +14,11 @@
       "id": "d9a1",
       "name": "Dan Abramov",
       "number": "40-8654-4545"
+    },
+    {
+      "id": "6d4c",
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423134"
     }
   ]
 }

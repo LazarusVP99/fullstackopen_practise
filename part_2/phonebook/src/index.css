@@ -1,4 +1,4 @@
-.success {
+.success_message {
     color: green;
     width: 50%;
     background-color: #e8f5e9;
@@ -12,7 +12,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.error {
+.error_message {
     color: red;
     width: 50%;
     background-color: #ffcdd2;
@@ -26,6 +26,29 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.hidden {
-    display: none;
+.persons_container {
+    display: flex;
+    gap: 20px;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 30px;
+}
+
+.persons_container p {
+    display: flex;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.persons_container button {
+    background-color: #ff4444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 4px;
 }
