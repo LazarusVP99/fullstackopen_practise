@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const fetchUrl = "http://localhost:3001/api/persons"
+const isInDevMode = import.meta.env.MODE === 'development';
+
+const fetchUrl = !isInDevMode ?
+    import.meta.env.VITE_SERVER_URL : "http://localhost:3001/api/persons";
 
 const getData = () => axios.get(fetchUrl).then(response => response.data);
 
