@@ -41,10 +41,7 @@ const App = () => {
       getData()
         .then((response) => setPersons(response))
         .catch((error) =>
-          newMessage(
-            error.message || "Error can`t get data, try again later",
-            "error"
-          )
+          newMessage(error.response.data.error || error.message, "error")
         );
 
     getPersonsData();
@@ -85,7 +82,7 @@ const App = () => {
             newMessage(`Updated ${newName}'s phone number`, "success");
           })
           .catch((error) => {
-            newMessage(error.message || "Failed to Update Person", "error");
+            newMessage(error.response.data.error || error.message, "error");
           });
       }
       return;
@@ -117,7 +114,7 @@ const App = () => {
         setNewName("");
       })
       .catch((error) => {
-        newMessage(error.message || "Failed to add Person", "error");
+        newMessage(error.response.data.error || error.message, "error");
       });
   };
 
@@ -150,7 +147,7 @@ const App = () => {
         newMessage(`${name} was successfully deleted`, "success");
       })
       .catch((error) => {
-        newMessage(error.message || "Failed to delete Person", "error");
+        newMessage(error.response.data.error || error.message, "error");
       });
   };
 

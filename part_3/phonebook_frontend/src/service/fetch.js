@@ -13,7 +13,7 @@ const postData = ({ newName, newNumber }) => axios
 const deleteData = (id) => axios
     .delete(`${fetchUrl}/${id}`).then((response) => response.data)
 
-const updatePhoneNumber = (person) => axios.put(
+const updatePhoneNumber = (person) => axios.patch(
     `${fetchUrl}/${person.id}`, person).then((response) => response.data)
 
 export default {
