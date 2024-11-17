@@ -1,6 +1,7 @@
 import env from 'dotenv';
 import express from "express";
 import morgan from "morgan";
+
 import errorMiddlewareHandler from './Middleware/middleware.js';
 import Person, { connectDB } from "./Models/person.model.js";
 
@@ -41,7 +42,7 @@ app.get('/info', async (_req, res) => {
         <p>${new Date()}</p>`)
 })
 
-app.get("/api/persons/:id", async (req, res) => {
+app.get("/api/persons/:id", async (req, res, next) => {
     const { id } = req.params;
     try {
         const person = await Person.findById(id);

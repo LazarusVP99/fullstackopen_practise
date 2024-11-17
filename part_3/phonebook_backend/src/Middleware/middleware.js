@@ -11,7 +11,7 @@ const errorsCaseHandler = (error, res) => {
     }
 };
 
-const errorMiddlewareHandler = (error, _req, res, _next) => {
+const errorMiddlewareHandler = (error, _req, res) => {
     console.error(error.message);
     return errorsCaseHandler(error, res);
 };
