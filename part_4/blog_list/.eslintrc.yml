@@ -1,0 +1,35 @@
+env:
+  node: true
+  es2021: true
+extends:
+  - eslint:recommended
+  - airbnb-base
+parserOptions:
+  ecmaVersion: 15
+  sourceType: module
+rules:
+  import/extensions: ['error', 'always']
+  indent:
+    - error
+    - 2
+  linebreak-style:
+    - error
+    - windows
+  quotes:
+    - error
+    - single
+  semi:
+    - error
+    - always
+  no-console:
+    - off
+  no-underscore-dangle:
+    - off
+  no-param-reassign:
+    - off
+  camelcase:
+    - off
+  no-unused-vars:
+    - off
+  import/no-unresolved:
+    - off
