@@ -1,24 +1,21 @@
-const authControllerSetup = ({ db_service, errors }) => ({
+const authControllerSetup = ({
+  db_service, constants, errors,
+}) => ({
   userAuth: async (req, res) => {
     const { username, password } = req.body;
+    const { formatAuthResponse, OK } = constants;
 
-    if (!username || !password) throw errors.ValidationError('Username and password are required');
+    constants.validateAuthCredentials({ username, password }, errors);
 
     const user = await db_service.Model.findOne({ username });
 
-    if (!user) throw errors.UnauthorizedError('Enter valid username');
+    constants.isValidUsername(user, errors);
 
     const validatePassword = await user.comparePassword(password);
 
-    if (!validatePassword) throw errors.UnauthorizedError('Enter valid password');
+    constants.isValidPass(validatePassword, errors);
 
-    res.status(200).json({
-      token: user.userToken(),
-      username: user.username,
-      name: user.name,
-      id: user._id,
-      expiresIn: 3600,
-    });
+    res.status(OK).json(formatAuthResponse(user));
   },
 });
 

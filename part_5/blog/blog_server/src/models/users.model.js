@@ -3,36 +3,16 @@ import jwt from 'jsonwebtoken';
 import { Schema, model } from 'mongoose';
 import { config } from '../utils/index.js';
 
-const userSchema = new Schema({
-  username: {
-    type: String,
-    required: [true, 'Username is required'],
-    minlength: [3, 'Username must be at least 3 characters long'],
-    maxlength: [50, 'Username must be less than 50 characters long'],
-    unique: true,
-  },
-  name: {
-    type: String,
-    minlength: [2, 'Name must be at least 2 characters long'],
-    maxlength: [30, 'Name must be less than 30 characters long'],
-  },
-  blogs: {
-    type: [Schema.Types.ObjectId],
-    ref: 'Blog',
-  },
-  password: {
-    type: String,
-    required: [true, 'Password is required'],
-    minlength: [3, 'Password must be at least 3 characters long'],
-  },
-});
+import { userModelEntity } from './entity.js';
+
+const userSchema = new Schema(userModelEntity);
 
 userSchema.pre(
   'save',
   async function hashPassword(next) {
     const saltRounds = await genSalt(10);
     if (this.isModified('password') && process.env.NODE_ENV !== 'test') {
-      this.password = await hash(this.password, saltRounds);
+      this.password = hash(this.password, saltRounds);
     }
     next();
   },
@@ -45,16 +25,17 @@ userSchema.methods.comparePassword = async function comparePassword(password) {
   return compare(password, this.password);
 };
 
-userSchema.methods.userToken = function userToken() {
-  const { username, id } = this;
-  return jwt.sign(
-    {
-      username,
-      id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
-    },
-    config.SECRET,
-  );
+userSchema.methods.generateToken = function generateToken(options = {}) {
+  const { username, id, name } = this;
+  const { expiresIn = '1h', includeUserDetails = false } = options;
+
+  const payload = {
+    username,
+    id,
+    ...(includeUserDetails && { name }),
+  };
+
+  return jwt.sign(payload, config.SECRET, { expiresIn });
 };
 
 userSchema.set('toJSON', {

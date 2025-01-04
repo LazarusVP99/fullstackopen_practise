@@ -1,70 +1,52 @@
-import User from '../models/users.model.js';
-
-const blogControllerSetup = ({ db_service, errors }) => ({
-  getAllBlogs: async (_req, res) => {
-    const dataToPopulate = {
-      path: 'user',
-      select: 'username name id',
-    };
-    const blogs = await db_service.readAll(dataToPopulate);
-
-    res.json(blogs);
-  },
+const blogControllerSetup = ({ db_service, constants, errors }) => ({
+  getAllBlogs: async (_req, res) => res
+    .json(await db_service.readAll(constants.dataToPopulate)),
   postBlogs: async (req, res) => {
     const { title, author, url } = req.body;
     const { user: authorizedUser } = req;
+    const {
+      populateOptions, formattedData, findUser, CREATED,
+    } = constants;
 
-    if (!title || !url) throw errors.ValidationError('title and url are required');
-    if (!authorizedUser.id) throw errors.UnauthorizedError('invalid token or unauthorized');
+    constants.isDefinedData({ title, author, url }, errors);
+    constants.isAuthorizedUser(authorizedUser.id, errors);
 
-    const user = await User.findById(authorizedUser.id);
+    const user = await findUser(authorizedUser.id);
 
-    if (!user) throw errors.NotFoundError('user not found');
+    constants.isUserDefined(user, errors);
 
-    const blog = await db_service.create({
-      title,
-      author,
-      url,
-      user: user._id,
-    }, {
-      path: 'user',
-      select: 'username name id',
-    });
+    const blog = await db_service.create(formattedData(req.body, authorizedUser), populateOptions);
 
     user.blogs = user.blogs.concat(blog._id);
 
     await user.save();
 
-    res.status(201).json(blog);
+    res.status(CREATED).json(blog);
   },
   updateBlog: async (req, res) => {
     const { id } = req.params;
     const { likes } = req.body;
 
-    if (!likes || typeof likes !== 'number') throw errors.ValidationError('likes must be of type number');
+    constants.updatedDataTypeCheck(likes, errors);
 
     const blog = await db_service.update(id, { likes });
 
-    if (!blog) throw errors.NotFoundError('blog not found');
+    constants.isBlogDefined(blog, errors);
 
-    res.status(200).json(blog);
+    res.status(constants.OK).json(blog);
   },
   deleteBlog: async (req, res) => {
     const { id } = req.params;
     const { user } = req;
 
     const userBlog = await db_service.Model.findById(id);
-    console.log(userBlog);
 
-    if (!userBlog) throw errors.NotFoundError('blog not found');
+    constants.isBlogDefined(userBlog, errors);
+    constants.isAuthorizedToDelete(userBlog.user, user.id, errors);
 
-    if (userBlog.user.toString() !== user.id) throw errors.UnauthorizedError('Not authorized to delete this blog');
+    await db_service.delete(id);
 
-    const blog = await db_service.delete(id);
-
-    if (!blog) throw errors.NotFoundError('blog not found');
-
-    res.status(204).end();
+    res.status(constants.NO_CONTENT).end();
   },
 });
 

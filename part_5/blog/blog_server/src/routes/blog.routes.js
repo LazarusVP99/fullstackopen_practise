@@ -1,6 +1,7 @@
 import { Router } from 'express';
 
 import blogControllerSetup from '../controllers/blog.controller.js';
+import blogConstants from '../service/constants/blog.constants.js';
 import { ApiError } from '../middleware/error.middleware.js';
 import tokenMiddleware from '../middleware/token.middleware.js';
 import Blog from '../models/blog.model.js';
@@ -12,6 +13,7 @@ const blogService = new ModelsService(Blog);
 
 const blogController = blogControllerSetup({
   db_service: blogService,
+  constants: blogConstants,
   errors: ApiError,
 });
 

@@ -33,8 +33,6 @@ class ApiError extends Error {
 }
 
 const errorHandler = (error, res) => {
-  console.error('Error details:', error);
-
   if (error instanceof ApiError) {
     return res.status(error.statusCode).json({ error: error.message });
   }
@@ -56,7 +54,13 @@ const errorMiddlewareHandler = (error, req, res, next) => {
   if (error.message) {
     console.error(error.message);
   } else {
-    console.error(error);
+    console.error('Error details:', {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+      path: req.path,
+      method: req.method,
+    });
   }
 
   return errorHandler(error, res);

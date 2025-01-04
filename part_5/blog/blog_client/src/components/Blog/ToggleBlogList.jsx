@@ -28,7 +28,7 @@ const ToggleBlogList = ({ children, blog, setBlogs, notify }) => {
   );
 
   return (
-    <article className="blog-list">
+    <article className="blog-list" data-testid="blog-item">
       <div className="blog-review">
         <h3 data-testid='blog-title'>{blog.title}</h3>
         {extendedView && childrenWithProps}

@@ -1,28 +1,17 @@
-const usersControllerSetup = ({ db_service, errors }) => ({
-  getUsers: async (_req, res) => {
-    const dataToPopulate = {
-      path: 'blogs',
-      select: 'url title author id',
-    };
-
-    const users = await db_service.readAll(dataToPopulate);
-
-    res.json(users);
-  },
+const usersControllerSetup = ({
+  db_service, constants, errors,
+}) => ({
+  getUsers: async (_req, res) => res
+    .json(await db_service.readAll(constants.dataToPopulate)),
   postUserInfo: async (req, res) => {
     const { username, name, password } = req.body;
+    const { message, validatePassword } = constants;
 
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(password)) {
-      throw errors.ValidationError(
-        'Password must contain at least eight characters, one uppercase letter, one lowercase letter and one number',
-      );
-    }
+    validatePassword(password, errors);
 
-    const userToCreate = { username, name, password };
+    await db_service.create({ username, name, password });
 
-    await db_service.create(userToCreate);
-
-    res.status(201).json({ message: 'User created' });
+    res.status(constants.CREATED).json({ message });
   },
 });
 
