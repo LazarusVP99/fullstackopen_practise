@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 
-const testHelperHandler = (page) => ({
-    fillBlogForm: async (blogs) => {
+const testHelperHandler = ({ page }) => ({
+    fillBlogForm: async blogs => {
         for (const blog of blogs) {
             await page.getByRole("button", { name: "Create new blog" }).click();
             await page.getByPlaceholder("title").fill(blog.blogTitle);
@@ -10,7 +10,7 @@ const testHelperHandler = (page) => ({
             await page.getByRole("button", { name: "Submit Blog" }).click();
         }
     },
-    fillLoginForm: async (user) => {
+    fillLoginForm: async user => {
         await page.getByPlaceholder("username").fill(user.username);
         await page.getByPlaceholder("password").fill(user.password);
         await page.getByRole("button", { name: "Login" }).click();

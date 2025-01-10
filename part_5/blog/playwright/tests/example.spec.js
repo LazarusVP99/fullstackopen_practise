@@ -1,6 +1,6 @@
 import { expect, test, } from '@playwright/test';
-import testHelperHandler from '../helpers/helpers.js';
 import { authorizeUsers, blogsData } from '../data/test.data.js';
+import testHelperHandler from '../helpers/helpers.js';
 
 const { describe, beforeEach } = test;
 
@@ -15,7 +15,7 @@ describe.serial('Blog app', () => {
       )
     );
 
-    helpers = testHelperHandler(page)
+    helpers = testHelperHandler({ page });
 
     await page.goto('/');
   });
