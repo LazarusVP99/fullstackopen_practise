@@ -1,6 +1,6 @@
-import { voteAnecdote } from "../reducers/anecdoteReducer";
+import { updateVoteAction } from "../actions/api.action";
 
-const AnecdoteList = ({ anecdote, dispatch }) => (
+const AnecdoteList = ({ anecdote, dispatch, notification }) => (
   <>
     <div>
       {anecdote.content} <br />
@@ -8,7 +8,7 @@ const AnecdoteList = ({ anecdote, dispatch }) => (
     </div>
     <div className="button_container">
       <button
-        onClick={() => dispatch(voteAnecdote(anecdote.id))}
+        onClick={() => dispatch(updateVoteAction(anecdote, notification))}
       >
         vote
       </button>
